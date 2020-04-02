@@ -1,0 +1,353 @@
+openapi: 3.0.0
+info:
+  description: Initial version of the contract associated to the DemoConnector application
+  version: 1.0.0
+  title: DemoConnector
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: DemoConnector
+    description: Example controller for the DemoConnector application
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+paths:
+  /api/validate:
+    post:
+      tags:
+        - DemoConnector
+      summary: Permite realizar un POST para validar el conector absis 2
+      description: Permite realizar un POST para validar el conector absis 2
+      operationId: validate
+      x-absis-security: "DemoConnector.validate"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Validate'
+      responses:
+        '200':
+          description: Correct request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Validate'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Validate'
+            text/plain:
+              schema:
+                type: string
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        403:
+          $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  /api/demo-validation/{pathparam}:
+    post:
+      tags:
+        - DemoConnector
+      x-absis-operation-type: AbsisOperationTypeEnum.GA
+      x-absis-security: "DemoConnector.demo-validation"
+      parameters:
+        - in: path
+          name: pathparam
+          required: true
+          schema:
+            type: string
+          description: Path param usado para validar la peticion
+        - in: query
+          name: queryparam
+          required: true
+          schema:
+            type: string
+          description: Query param usado para validar la peticion entrante
+        - in: header
+          name: headerparam
+          required: true
+          schema:
+            type: string
+          description: Header param usado para validar la peticion entrante
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InputTO'
+      responses:
+        '200':
+          description: Correct request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutputTO'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OutputTO'
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        403:
+          $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+      summary: Permite realizar un POST para validar el conector absis 2
+      description: Permite realizar un POST para validar el conector absis 2
+      operationId: demoValidationPathparamPost
+      x-absis-security: "annotation.security3"
+  /api/generate-error:
+    post:
+      tags:
+        - DemoConnector
+      summary: Permite realizar un POST para validar el conector absis 2 con una respuesta de error
+      description: Permite realizar un POST para validar el conector absis 2 con una respuesta de error
+      operationId: generate-error
+      x-absis-security: "DemoConnector.generate-error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorStructure'
+      responses:
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        403:
+          $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+components:
+  schemas:
+    InputTO:
+      description: Peticion de entrada para el conector absis 2
+      type: object
+      properties:
+        inputString:
+          type: string
+          description: Campo de entrada que se devolverá en la respuesta
+          example: Este valor debe venir en la respuesta
+    OutputTO:
+      description: Respuesta para validar el conector absis 2
+      type: object
+      properties:
+        outputBodyString:
+          type: string
+          description: Campo de entrada que se devolverá en la respuesta correspondiente al body request
+        outputPathParam:
+          type: string
+          description: Campo de entrada que se devolverá en la respuesta correspondiente al path param
+        outputQueryParam:
+          type: string
+          description: Campo de entrada que se devolverá en la respuesta correspondiente al query param
+        outputHeaderParam:
+          type: string
+          description: Campo de entrada que se devolverá en la respuesta correspondiente a la header
+        outputHeaderDevice:
+          type: string
+          description: Cabecera de arquitectura con información sobre el dispositivo
+        outputHeaderUser:
+          type: string
+          description: Cabecera de arquitectura con información sobre el usuario
+        outputHeaderChannel:
+          type: string
+          description: Cabecera de arquitectura con información sobre el canal
+        outputHeaderCloud:
+          type: string
+          description: Cabecera de arquitectura con información sobre el canal de cloud
+        outputHeaderArchitecture:
+          type: string
+          description: Cabecera de arquitectura
+    Validate:
+      description: Correct request
+      type: object
+      properties:
+        param:
+          type: string
+          description: Example parameter
+          example: value of the first param
+    ErrorStructure:
+      description: Correct request
+      type: object
+      properties:
+        type:
+          type: string
+          description: Campo de entrada que se devolverá en la respuesta
+          example: Este valor debe venir en la respuesta
+        message:
+          type: string
+          description: Campo de entrada que se devolverá en la respuesta
+          example: Este valor debe venir en la respuesta
+
+    Exception:
+      type: object
+    Rfc7807Exception:
+      description: The Rfc7807 specification for exceptions.
+      allOf:
+        - $ref: '#/components/schemas/Exception'
+        - type: object
+          properties:
+            type:
+              type: string
+              description: A URI reference that identifies the problem type.  This specification encourages that, when dereferenced, it provide human-readable documentation for the problem type.
+            title:
+              type: string
+              description: A short, human-readable summary of the problem type.
+            status:
+              type: integer
+              description: The HTTP status code.
+            detail:
+              type: string
+              description: A human-readable explanation specific to this occurrence of the problem.
+            instance:
+              type: string
+              description: A URI reference that identifies the specific occurrence of the problem.
+          required: 
+          - type
+          - title
+          - status
+          - detail
+    AbsisExceptionType:
+      type: string
+      enum: [VALIDATION, BUSINESS, RUNTIME, CHALLENGE, NOTFOUND, UNAUTHORIZED, AUTHENTICATION]
+      description: The possible types of an AbsisException.
+    AbsisFieldError:
+      type: object
+      description: The representation of a validation error.
+      properties:
+        code:
+          type: string
+          description: The error code.
+        parameters:
+          type: array
+          items:
+            type: object
+          description: List of parameters to replace in the message.
+        value:
+          type: object
+          description: The value that caused the error.
+      example:
+        code: request
+        parameters:
+        - codes:
+          - aCode
+          - otherCode
+        value: NotNull
+    AbsisException:
+      description: Representation of an exception.
+      allOf:
+        - $ref: '#/components/schemas/Rfc7807Exception'
+        - type: object
+          properties:
+            _class:
+              type: string
+              description: The canonical name of the class AbsisException.
+            cause:
+              $ref: '#/components/schemas/AbsisException'
+              description: The AbsisException wrapping the exception that originated this exception.
+            code:
+              type: string
+              description: The error code.
+            translated: 
+              type: boolean
+              description: Whether if the exception has been translated or not.
+            parameters:
+              type: array
+              items:
+                type: object
+              description: List of parameters to replace in the detail message.
+            errors:
+              type: object
+              additionalProperties:
+                $ref: '#/components/schemas/AbsisFieldError'
+              description: List of validation errors.
+          example: 
+            _class: com.caixabank.absis.arch.common.exception.AbsisException
+            cause:
+              _class: com.caixabank.absis.arch.common.exception.AbsisException
+              cause: null
+              type: /runtime
+              title: RUNTIME
+              status: 500
+              detail: Filter threw Exception
+              code: com.netflix.zuul.exception.ZuulException
+              translated: false
+            type: /runtime
+            title: RUNTIME
+            status: 500
+            detail: Caught in Zuul
+            code: 0000
+            translated: false
+  responses:
+      '400':
+        description: Error when validating input parameters or request body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbsisException'
+            example:
+              _class: com.caixabank.absis.arch.common.exception.AbsisException
+              type: "/validation"
+              title: VALIDATION
+              status: 400
+              detail: Generic validation error
+              code: CODE_GENERIC_VALIDATION_ERROR
+              translated: false
+              errors:
+                request:
+                  code: NotNull
+                  parameters:
+                  - codes:
+                    - serviceManagerRequest.request
+                    - request
+                    defaultMessage: request
+                    code: request
+      '401':
+        description: User authentication error.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbsisException'
+      '403':
+        description: The user has not enough privileges to perform the requested operation so the request has been rejected.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbsisException'
+      '404':
+        description: The endpoint does not exists or the attempted resource does not exist.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbsisException'
+      '409':
+        description: Semantic validation error triggered when validating the request data or while running the use case.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbsisException'
+      '428':
+        description: The data has been validated but the operation could not been performed because a third-party approval is required.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbsisException'
+      '500':
+        description: Unexpected error occurred at one of the layers of the microservice, controller, business service, repository etc.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbsisException'
